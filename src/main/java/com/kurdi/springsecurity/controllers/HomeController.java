@@ -19,54 +19,21 @@ import java.util.List;
 
 @RestController
 public class HomeController {
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    UserRepository userRepository;
-    @GetMapping("/user")
-    public String welcome()
-    {
-        return "welcome user";
-    }
-    @GetMapping("/register")
-    public ResponseEntity<String> register()
-    {
-        List<Authority> authorities = new ArrayList<>();
-        AppUser user = AppUser.builder()
-                .username("sheriff")
-                .password(passwordEncoder.encode("123"))
-                .authorities(authorities)
-                .build();
-
-        authorities.add(Authority
-                .builder()
-                .appUser(user)
-                .name(Roles.ADMIN.getRole())
-                .build());
-
-        authorities.add(Authority
-                .builder()
-                .appUser(user)
-                .name(Permissions.EmployeeRead.getPermission())
-                .build());
-
-        if(!userRepository.findUserByUsername(user.getUsername()).isPresent())
-        {
-            userRepository.save(user);
-        }
-
-
-        return ResponseEntity.ok(user.getUsername());
-    }
-    @GetMapping("/admin")
-    public String admin()
-    {
-        return "welcome admin";
-    }
 
     @GetMapping("/")
     public String guest()
     {
         return "welcome guest";
     }
+
+    @GetMapping("/user")
+    public String welcome(){return "welcome user";}
+
+    @GetMapping("/admin")
+    public String admin()
+    {
+        return "welcome admin";
+    }
+
+
 }
